@@ -161,3 +161,36 @@ p {
         }
     }
 }
+
+.archives_flex {
+    padding: 0;
+    width: 90%;
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    text-align: center;
+    gap: 5%;
+
+    .archives_block {
+        position: relative;
+        display: inline-block;
+        width: calc((100% - 10%)/3);
+        text-align: left;
+        list-style: none;
+        padding: 0;
+        margin-bottom: 5%;
+
+        p {
+            width: 100%;
+            margin: 5px 0;
+            text-align: center;
+        }
+
+        img {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            object-fit: cover;
+        }
+    }
+}
