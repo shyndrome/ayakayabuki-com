@@ -194,3 +194,11 @@ p {
         }
     }
 }
+
+.template_box {
+    margin: 0 30px;
+
+    img {
+        width: 350px;
+    }
+}
