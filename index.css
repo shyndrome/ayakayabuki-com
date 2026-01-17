@@ -19,6 +19,11 @@ body {
     animation-duration: .5s;
 }
 
+a {
+    text-decoration: none;
+    color: #444;
+}
+
 @keyframes fadein {
   from{
     opacity: 0;
@@ -198,7 +203,7 @@ p {
             cursor: pointer;
         }
     }
-    
+
     .news_block {
         width: 60%;
         height: 150px;
