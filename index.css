@@ -429,6 +429,14 @@ p {
 /*contact.html*/
 .contact_imgbox {
     img {
-        width: 300px;
+        width: 250px;
+    }
+}
+
+@media only screen and (max-width: 449px) {
+    .contact_imgbox {
+        img {
+            width: 60vw;
+        }
     }
 }
