@@ -213,12 +213,13 @@ a {
 
 @media only screen and (max-width:799px) {
     .sort_var {
+        padding-bottom: env(safe-area-inset-bottom);
         position: fixed;
         bottom: 0;
         left: 0;
         display: flex;
         width: 60%;
-        background-color: #fff;
+        background-color: rgba(255, 255, 255, 0.95);
         z-index: 99;
         border-radius: 0 30px 0 0;
         box-shadow: 0 0 0.5px #444;
@@ -230,6 +231,7 @@ a {
             display: inline-block;
 
             p {
+                font-size: 12.5px;
                 text-align: center;
             }
         }
