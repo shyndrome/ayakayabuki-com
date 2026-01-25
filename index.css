@@ -35,7 +35,11 @@ body {
     animation-name: fadein;
     opacity: 0;
     animation-fill-mode: forwards;
-    animation-duration: .5s;
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.contents_fadein.show {
+    opacity: 1 !important;
 }
 
 a {
@@ -98,6 +102,95 @@ a {
     p {
         font-size: 15px;
         letter-spacing: 0.5px;
+    }
+}
+
+
+/*loading*/
+
+#loading {
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    background-color: #cdcbbf;
+    text-align:center;
+    color: #444;
+    overflow: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+#loading.loaded {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@media only screen and (max-width: 449px) {
+    .loading_in {
+        text-align: center;
+        width: 70%;
+        height: 50vh;
+        margin: calc((100vh - 50vh)/2) calc((100% - 70%)/2);
+    }
+
+    .loading_img {
+        width: 33.33vw;
+    }
+
+    #loading_text {
+        z-index: 999;
+        color: #444;
+        font-size: 3.33vw;
+        letter-spacing: 1.5px;
+        animation: pulse 1.5s infinite;
+    }
+}
+
+@media only screen and (min-width: 450px) {
+    .loading_in {
+        text-align: center;
+        width: 50%;
+        height: 50vh;
+        margin: calc((100vh - 50vh)/2) calc((100% - 50%)/2);
+    }
+
+    .loading_img {
+        width: 150px;
+    }
+
+    #loading_text {
+        z-index: 999;
+        color: #444;
+        font-size: 15px;
+        letter-spacing: 1.5px;
+        animation: pulse 1.5s infinite;
+    }
+}
+
+#loading_text.ready {
+    animation: fadeIn 1.5s;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 
@@ -215,7 +308,7 @@ a {
     .sort_var {
         padding-bottom: env(safe-area-inset-bottom);
         position: fixed;
-        bottom: 0;
+        /*bottom: 0;*/
         left: 0;
         display: flex;
         width: 60%;

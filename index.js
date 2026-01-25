@@ -1,7 +1,92 @@
 // 日・英表示定義
 var lang = localStorage.getItem('selectedLang') ? parseInt(localStorage.getItem('selectedLang')) : 0;
 
-// ★共通の適用関数を定義（onclickの中身をここにまとめました）
+// 3秒笑って
+const wait3sec = new Promise(resolve => setTimeout(resolve, 3000));
+
+// header, footer
+const fetchHeader = fetch('header.html').then(r => r.text());
+const fetchFooter = fetch('footer.html').then(r => r.text());
+
+// 全部終わってから
+Promise.all([wait3sec, fetchHeader, fetchFooter]).then(([_, headerData, footerData]) => {
+    
+    // header, footerの取り付け
+    document.getElementById('header_fetch_target').innerHTML = headerData;
+    document.getElementById('footer_fetch_target').innerHTML = footerData;
+
+    // 初期言語設定
+    applyLanguage(lang, false);
+    defaultLanguageSet();
+
+    // loading_textを切り替える
+    const loadText = document.getElementById('loading_text');
+    if (loadText) {
+        loadText.innerHTML = "Ayaka Yabuki";
+        loadText.classList.add('ready');
+    }
+
+    // クリックOKにする
+    const loadingScreen = document.getElementById('loading');
+    if (loadingScreen) {
+        loadingScreen.style.cursor = "pointer";
+        loadingScreen.onclick = function() {
+            
+            loadingScreen.classList.add('loaded');
+            
+            const contents = document.querySelector('.contents_fadein');
+            if (contents) contents.classList.add('show');
+            
+            document.body.style.overflow = '';
+        };
+    }
+}).catch(err => {
+    console.error("Error:", err);
+});
+
+document.body.style.overflow = 'hidden';
+
+// 言語設定
+function defaultLanguageSet(){
+    const toEnBtns = ["langToggleToEn", "langToggleToEn_Mob"]
+    const toJaBtns = ["langToggleToJa", "langToggleToJa_Mob"]
+
+    toEnBtns.forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.onclick = function() {
+                if (lang == 0) {
+                    lang = 1;
+                    localStorage.setItem('selectedLang', 1);
+                    applyLanguage(1, true);
+                    closeLangMenu();
+                }
+            }
+        }
+    })
+
+    toJaBtns.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+        btn.onclick = function() {
+            if (lang == 1) {
+                lang = 0;
+                localStorage.setItem('selectedLang', 0);
+                applyLanguage(0, true);
+                closeLangMenu();
+            }
+        }
+    }
+    })
+}
+
+// 言語メニュー閉じる
+function closeLangMenu() {
+    const check = document.getElementById('lang-btn-check');
+    if (check) check.checked = false;
+}
+
+// 言語設定共通
 function applyLanguage(currentLang, isAnimated) {
     const navJa = document.getElementsByClassName("nav-ja");
     const navEn = document.getElementsByClassName("nav-en");
@@ -36,64 +121,6 @@ function applyLanguage(currentLang, isAnimated) {
         }
     }
 }
-
-// header.htmlの読み込み
-document.addEventListener('DOMContentLoaded', () => {
-  fetch('header.html')
-    .then(response => response.text()) 
-    .then(data => {
-      document.getElementById('header_fetch_target').innerHTML = data;
-
-      // ★ページを読み込んだ瞬間に、保存されている言語を反映させる
-      applyLanguage(lang, false);
-
-      const toEnBtns = ["langToggleToEn", "langToggleToEn_Mob"]
-      const toJaBtns = ["langToggleToJa", "langToggleToJa_Mob"]
-
-      toEnBtns.forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) {
-            btn.onclick = function() {
-                if (lang == 0) {
-                    lang = 1;
-                    localStorage.setItem('selectedLang', 1);
-                    applyLanguage(1, true);
-                    closeLangMenu();
-                }
-            }
-        }
-      })
-
-      toJaBtns.forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) {
-            btn.onclick = function() {
-                if (lang == 1) {
-                    lang = 0;
-                    localStorage.setItem('selectedLang', 0);
-                    applyLanguage(0, true);
-                    closeLangMenu();
-                }
-            }
-        }
-      })
-      function closeLangMenu() {
-        const check = document.getElementById('lang-btn-check');
-        if (check) check.checked = false;
-      }
-    })
-    .catch(error => console.error('Error loading header:', error));
-});
-
-// footer.htmlの読み込み
-document.addEventListener('DOMContentLoaded', () => {
-  fetch('footer.html')
-    .then(response => response.text()) 
-    .then(data => {
-      document.getElementById('footer_fetch_target').innerHTML = data;
-    })
-    .catch(error => console.error('Error loading footer:', error));
-});
 
 // news, archivesのソート
 function categorySort(targetCategory, isAnimated=true){
