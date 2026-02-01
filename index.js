@@ -1,9 +1,6 @@
 // 日・英表示定義
 var lang = localStorage.getItem('selectedLang') ? parseInt(localStorage.getItem('selectedLang')) : 0;
 
-// 3秒笑って〜〜〜〜
-const wait3sec = new Promise(resolve => setTimeout(resolve, 3000));
-
 // header ランダム画像定義
 
 // header, footer
@@ -11,7 +8,7 @@ const fetchHeader = fetch('header.html').then(r => r.text());
 const fetchFooter = fetch('footer.html').then(r => r.text());
 
 // 全部終わってから
-Promise.all([wait3sec, fetchHeader, fetchFooter]).then(([_, headerData, footerData]) => {
+Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     
     // header, footerの取り付け
     document.getElementById('header_fetch_target').innerHTML = headerData;
@@ -21,36 +18,53 @@ Promise.all([wait3sec, fetchHeader, fetchFooter]).then(([_, headerData, footerDa
     applyLanguage(lang, false);
     defaultLanguageSet();
 
-    // loading_textを切り替える
-    const loadText = document.getElementById('loading_text');
-    if (loadText) {
-        loadText.innerHTML = "Ayaka Yabuki";
-        loadText.classList.add('ready');
+    if (document.querySelector('.sort_var')) {
+        categorySort('category_all', false);
     }
 
-    // クリックOKにする
     const loadingScreen = document.getElementById('loading');
+    const header = document.getElementById('header_fetch_target');
+    const contents = document.querySelector('.contents_fadein');
 
-    const unlockLoading = () => {
-        if (!loadingScreen.classList.contains('loaded')){
-            loadingScreen.classList.add('loaded');
-            const contents = document.querySelector('.contents_fadein');
-            if (contents) contents.classList.add('show');
-            document.body.style.overflow='';
+    if (loadingScreen){
 
-            clearTimeout(autoUnlock);
-        }
-    };
+        // 3秒笑って〜〜〜
+        setTimeout(() => {
 
-    const autoUnlock = setTimeout (() => {
-        unlockLoading();
-    }, 4000)
+            // loading_textを切り替える
+            const loadText = document.getElementById('loading_text');
+            if (loadText) {
+                loadText.innerHTML = "Ayaka Yabuki";
+                loadText.classList.add('ready');
+            }
 
-    if (loadingScreen) {
-        loadingScreen.style.cursor = "pointer";
-        loadingScreen.onclick = function() {
-            unlockLoading();
-        };
+            // クリックOKにする
+            const unlockLoading = () => {
+                if (!loadingScreen.classList.contains('loaded')){
+                    loadingScreen.classList.add('loaded');
+                    
+                    if (header) header.classList.add('show');
+                    if (contents) contents.classList.add('show');
+
+                    document.body.style.overflow='';
+                    clearTimeout(autoUnlock);
+                }
+            };
+
+            const autoUnlock = setTimeout (() => {
+                unlockLoading();
+            }, 4000)
+
+            if (loadingScreen) {
+                loadingScreen.style.cursor = "pointer";
+                loadingScreen.onclick = unlockLoading;
+            }
+        }, 3000);
+
+    } else {
+        if (header) header.classList.add('show');
+        if (contents) contents.classList.add('show');
+        document.body.style.overflow = '';
     }
 }).catch(err => {
     console.error("Error:", err);
@@ -136,20 +150,21 @@ function applyLanguage(currentLang, isAnimated) {
 
 // news, archivesのソート
 function categorySort(targetCategory, isAnimated=true){
+    // すべてのナビ要素を配列として取得
+    const sortAll = document.querySelectorAll(".sort_all");
+    const sortInfo = document.querySelectorAll(".sort_info");
+    const sortLive = document.querySelectorAll(".sort_live");
+    const sortMV = document.querySelectorAll(".sort_mv");
+    const sortPlay = document.querySelectorAll(".sort_play");
+
+    // 全言語分のナビの色を一括で変更する
+    sortAll.forEach(nav => nav.style.color = (targetCategory === 'category_all') ? "#444" : "#aaa");
+    sortInfo.forEach(nav => nav.style.color = (targetCategory === 'category_info') ? "#444" : "#aaa");
+    sortLive.forEach(nav => nav.style.color = (targetCategory === 'category_live') ? "#444" : "#aaa");
+    sortMV.forEach(nav => nav.style.color = (targetCategory === 'category_mv') ? "#444" : "#aaa");
+    sortPlay.forEach(nav => nav.style.color = (targetCategory === 'category_play') ? "#444" : "#aaa");
+
     const allBlocks = document.getElementsByClassName("sort_all_block");
-    const sortAll = document.getElementsByClassName("sort_all");
-    const sortInfo = document.getElementsByClassName("sort_info");
-    const sortLive = document.getElementsByClassName("sort_live");
-    const sortMV = document.getElementsByClassName("sort_mv");
-    const sortPlay = document.getElementsByClassName("sort_play");
-
-    // ナビの色変更
-    for (let nav of sortAll) nav.style.color = (targetCategory === 'category_all') ? "#444" : "#aaa";
-    for (let nav of sortInfo) nav.style.color = (targetCategory === 'category_info') ? "#444" : "#aaa";
-    for (let nav of sortLive) nav.style.color = (targetCategory === 'category_live') ? "#444" : "#aaa";
-    for (let nav of sortMV) nav.style.color = (targetCategory === 'category_mv') ? "#444" : "#aaa";
-    for (let nav of sortPlay) nav.style.color = (targetCategory === 'category_play') ? "#444" : "#aaa";
-
     for (let el of allBlocks) {
         const showEls = (targetCategory === 'category_all' || el.classList.contains(targetCategory));
 
@@ -165,6 +180,7 @@ function categorySort(targetCategory, isAnimated=true){
                     el.style.opacity = 1;
                 }, 800);
             } else {
+                el.style.display = ""; // デフォルト表示用
                 el.style.opacity = 1;
             }
         } else {
@@ -180,4 +196,4 @@ function categorySort(targetCategory, isAnimated=true){
             }
         }
     }
-} 
+}
