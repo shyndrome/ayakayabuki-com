@@ -1,8 +1,10 @@
 // 日・英表示定義
 var lang = localStorage.getItem('selectedLang') ? parseInt(localStorage.getItem('selectedLang')) : 0;
 
-// 3秒笑って
+// 3秒笑って〜〜〜〜
 const wait3sec = new Promise(resolve => setTimeout(resolve, 3000));
+
+// header ランダム画像定義
 
 // header, footer
 const fetchHeader = fetch('header.html').then(r => r.text());
@@ -28,16 +30,26 @@ Promise.all([wait3sec, fetchHeader, fetchFooter]).then(([_, headerData, footerDa
 
     // クリックOKにする
     const loadingScreen = document.getElementById('loading');
+
+    const unlockLoading = () => {
+        if (!loadingScreen.classList.contains('loaded')){
+            loadingScreen.classList.add('loaded');
+            const contents = document.querySelector('.contents_fadein');
+            if (contents) contents.classList.add('show');
+            document.body.style.overflow='';
+
+            clearTimeout(autoUnlock);
+        }
+    };
+
+    const autoUnlock = setTimeout (() => {
+        unlockLoading();
+    }, 4000)
+
     if (loadingScreen) {
         loadingScreen.style.cursor = "pointer";
         loadingScreen.onclick = function() {
-            
-            loadingScreen.classList.add('loaded');
-            
-            const contents = document.querySelector('.contents_fadein');
-            if (contents) contents.classList.add('show');
-            
-            document.body.style.overflow = '';
+            unlockLoading();
         };
     }
 }).catch(err => {
@@ -86,7 +98,7 @@ function closeLangMenu() {
     if (check) check.checked = false;
 }
 
-// 言語設定共通
+// 言語表示処理共通
 function applyLanguage(currentLang, isAnimated) {
     const navJa = document.getElementsByClassName("nav-ja");
     const navEn = document.getElementsByClassName("nav-en");
@@ -97,8 +109,8 @@ function applyLanguage(currentLang, isAnimated) {
     const hideEls = (currentLang === 1) ? langJa : langEn;
 
     // ナビの色変更
-    for (let nav of navJa) nav.style.color = (currentLang === 0) ? "#444" : "#bbb";
-    for (let nav of navEn) nav.style.color = (currentLang === 1) ? "#444" : "#bbb";
+    for (let nav of navJa) nav.style.color = (currentLang === 0) ? "#444" : "#aaa";
+    for (let nav of navEn) nav.style.color = (currentLang === 1) ? "#444" : "#aaa";
 
     // 非表示処理
     for (let el of hideEls) {
@@ -132,11 +144,11 @@ function categorySort(targetCategory, isAnimated=true){
     const sortPlay = document.getElementsByClassName("sort_play");
 
     // ナビの色変更
-    for (let nav of sortAll) nav.style.color = (targetCategory === 'category_all') ? "#444" : "#bbb";
-    for (let nav of sortInfo) nav.style.color = (targetCategory === 'category_info') ? "#444" : "#bbb";
-    for (let nav of sortLive) nav.style.color = (targetCategory === 'category_live') ? "#444" : "#bbb";
-    for (let nav of sortMV) nav.style.color = (targetCategory === 'category_mv') ? "#444" : "#bbb";
-    for (let nav of sortPlay) nav.style.color = (targetCategory === 'category_play') ? "#444" : "#bbb";
+    for (let nav of sortAll) nav.style.color = (targetCategory === 'category_all') ? "#444" : "#aaa";
+    for (let nav of sortInfo) nav.style.color = (targetCategory === 'category_info') ? "#444" : "#aaa";
+    for (let nav of sortLive) nav.style.color = (targetCategory === 'category_live') ? "#444" : "#aaa";
+    for (let nav of sortMV) nav.style.color = (targetCategory === 'category_mv') ? "#444" : "#aaa";
+    for (let nav of sortPlay) nav.style.color = (targetCategory === 'category_play') ? "#444" : "#aaa";
 
     for (let el of allBlocks) {
         const showEls = (targetCategory === 'category_all' || el.classList.contains(targetCategory));
@@ -168,5 +180,4 @@ function categorySort(targetCategory, isAnimated=true){
             }
         }
     }
-}
-
+} 

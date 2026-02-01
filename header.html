@@ -65,12 +65,12 @@
         }
         @media only screen and (min-width:450px) and (max-width: 799px) {
             .nav {
-                width: calc(100% - 90px);
+                width: calc(100% - 100px);
                 padding: 0 0 0 10px;
             }
             .nav-name {
                 display: inline;
-                width: calc(100% - 75px);
+                width: calc(100% - 90px);
                 height: 100%;
                 align-items: center;
 
@@ -80,7 +80,7 @@
             }
             .nav-item {
                 display: inline-block;
-                width: 25px;
+                width: 30px;
                 cursor: pointer;
                 text-align: center;
             }
@@ -111,7 +111,7 @@
             color: #444;
         }
         .nav-en {
-            color: #bbb;
+            color: #aaa;
         }
         .lang_ja {
             display: block;
@@ -123,22 +123,31 @@
     <!--drop down-->
     <style>
         /*メニュー*/
+        .language-menu {
+            position: relative;
+        }
         .lang-btn {
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 90;
             width: 20vw;
-            height: 25px;
+            height: calc(4vw + 14px);
             background-color: #fff;
             border: 0.75px solid #444;
             transition: all 0.5s;
             border-radius: 5px;
+            text-align: left;
+            font-weight: 100;
+            margin: 0; /* 余計なマージンを排除 */
+            box-sizing: border-box;
         }
 
         .lang-btn::after {
-            content:"Language";
-            font-size: 3vw;
+            content:"JA|EN";
+            font-size: 4vw;
+            margin: 2px 0 5px;
+            letter-spacing: 2.5px !important;
             color: #444;
             letter-spacing: 0.5px;
         }
@@ -151,13 +160,14 @@
         .lang-content {
             width: 20vw;
             position: absolute;
-            top: 55px;
+            top: 100%;
             z-index: 100;
             background-color: #fff;
             transition: all 1s;
-            border-radius: 5px;
-            box-shadow: 0 0 0.5px #444;
             display: none;
+            border-radius: 0 0 5px 5px;
+            border: 0.75px solid #ccc;
+            border-top: none;
 
             ul {
                 overflow: auto;
@@ -168,19 +178,25 @@
                 li {
                     display: block;
                     list-style: none;
-                    text-align: center;
+                    text-align: left;
                     margin: 0;
                     color: #444;
-                    letter-spacing: 0.25px;
-                    font-size: 3vw;
+                    letter-spacing: 2px;
+                    font-size: 4vw;
                     z-index: 99;
                     line-height: 1;
+                    border-radius: 5px;
+                    border: none;
+                    border-bottom: 0.5px solid #ccc;
+                    &:last-child {
+                        border-bottom: none;
+                    }
                 }
                 .nav-ja {
-                    padding: 10px 0 5px;
+                    padding: 6px 0 8px 10px;
                 }
                 .nav-en {
-                    padding: 5px 0 10px;
+                    padding: 7px 0 7px 10px;
                 }
             }
         }
@@ -196,43 +212,17 @@
     <!--menu-->
     <style>
         /*メニュー*/
-        .menu-btn {
-            position: fixed;
-            top: 25px;
-            right: 40px;
-            display: flex;
-            height: 30px;
-            width: 40px;
-            justify-content: center;
-            align-items: center;
-            z-index: 120;
-
-            span, span:before, span:after {
-                content:" ";
-                display: block;
-                height: 1px;
-                width: 50px;
-                background-color: #444;
-                position: absolute;
-                transition: all 0.5s;
-                border-radius: 5px;
-            }
-
-            span:before {
-                bottom: 15px;
-            }
-
-            span:after {
-                top: 15px;
-            }
-        }
-
         @media only screen and (max-width: 449px) {
             .menu-btn {
+                position: fixed;
                 top: 25px;
                 right: 15px;
                 height: 30px;
                 width: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 120;
 
                 span, span:before, span:after {
                     content:" ";
@@ -261,6 +251,11 @@
                 right: 25px;
                 height: 25px;
                 width: 40px;
+                justify-content: center;
+                align-items: center;
+                z-index: 120;
+                position: fixed;
+                display: flex;
 
                 span, span:before, span:after {
                     content:" ";
@@ -274,14 +269,47 @@
                 }
 
                 span:before {
-                    bottom: 12.5px;
+                    bottom: 12px;
                 }
 
                 span:after {
-                    top: 12.5px;
+                    top: 12px;
                 }
             }
             
+        }
+
+        @media only screen and (min-width: 800px){
+            .menu-btn {
+                position: fixed;
+                top: 25px;
+                right: 30px;
+                display: flex;
+                height: 30px;
+                width: 40px;
+                justify-content: center;
+                align-items: center;
+                z-index: 120;
+
+                span, span:before, span:after {
+                    content:"";
+                    display: block;
+                    height: 1px;
+                    width: 40px;
+                    background-color: #444;
+                    position: absolute;
+                    transition: all 0.5s;
+                    border-radius: 5px;
+                }
+
+                span:before {
+                    bottom: 12px;
+                }
+
+                span:after {
+                    top: 12px;
+                }
+            }
         }
         
         #menu-btn-check:checked ~ .menu-btn span {
@@ -320,11 +348,11 @@
                     a {
                         display: inline-block;
                         position: relative;
-                        font-size: 25px;
+                        font-size: 20px;
                         box-sizing: border-box;
                         color:#444;
                         text-decoration: none;
-                        padding: 25px 0;
+                        padding: 20px 0;
                         letter-spacing: 3px;
                         font-weight: bolder;
                         transition: all 3s;
@@ -337,7 +365,7 @@
                         height: 1px;
                         background-color: #333;
                         z-index: 99;
-                        bottom: 25px;
+                        bottom: 20px;
                         left: 0;
                         transform: scale(0, 1);
                         transform-origin: left top;
@@ -378,19 +406,19 @@
                 <!--ここからメニュー-->
                 <div class="lang-content">
                     <ul>
-                        <li class="nav-ja" id="langToggleToJa_Mob">Japanese</li>
-                        <li class="nav-en" id="langToggleToEn_Mob">English</li>
+                        <li class="nav-ja" id="langToggleToJa_Mob">JA</li>
+                        <li class="nav-en" id="langToggleToEn_Mob">EN</li>
                     </ul>
                 </div>
             </div>
             <div class="nav-item nav-ja without_mobile" id="langToggleToJa">
-                Ja
+                JA
             </div>
             <div class="nav-item without_mobile">
                 |
             </div>
             <div  class="nav-item nav-en without_mobile" id="langToggleToEn">
-                En
+                EN
             </div>
         </ul>
     
