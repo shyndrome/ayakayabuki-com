@@ -138,18 +138,27 @@ a {
         text-align: center;
         width: 90%;
         height: 50vh;
-        margin: calc((100vh - 50vh)/2) calc((100% - 70%)/2);
+        margin: calc((100vh - 50vh)/2) auto;
+        overflow: hidden;
+        width: 100%;
+        position: relative;
     }
 
     .loading_img {
         width: 33.33vw;
+        margin-left: 5px;
     }
 
     .loading_video {
-        width: 100%;
+        width: 600px;
         height: auto;
         display: block;
-        margin: 0 auto 20px;
+        max-width: none;
+
+        display: block;
+        position: relative;
+        left: 49%;
+        transform: translateX(-50%);
     }
 
     #loading_text {
@@ -172,7 +181,7 @@ a {
 
     .loading_img {
         width: 150px;
-        margin-left: 15px;
+        margin-left: 5px;
     }
 
     .loading_video {
@@ -183,7 +192,7 @@ a {
 
         display: block;
         position: relative;
-        left: 50%;
+        left: 49%;
         transform: translateX(-50%);
     }
 
