@@ -27,7 +27,9 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
     const contents = document.querySelector('.contents_fadein');
     const loadingVideo = document.getElementById('loading_video');
 
-    if (loadingScreen && loadingVideo){
+    const hasLoaded = sessionStorage.getItem('hasLoaded');
+
+    if (loadingScreen && loadingVideo && !hasLoaded){
 
         // 3秒笑って〜〜〜
         loadingVideo.onended  = () => {
@@ -52,6 +54,7 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
                     if (footer) footer.classList.add('show');
 
                     document.body.style.overflow='';
+                    sessionStorage.setItem('hasLoaded', 'true');
                     clearTimeout(autoUnlock);
                 }
                 //ここまで
@@ -68,8 +71,11 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
         }//, 5000);
 
     } else {
+        if (loadingScreen) loadingScreen.style.display = 'none'; // ローディング画面自体を消す
         if (header) header.classList.add('show');
         if (contents) contents.classList.add('show');
+        const footer = document.getElementById('footer_fetch_target');
+        if (footer) footer.classList.add('show');
         document.body.style.overflow = '';
     }
 }/*).catch(err => {
@@ -152,6 +158,12 @@ function applyLanguage(currentLang, isAnimated) {
             el.style.opacity = 1;
         }
     }
+
+    // news_detail
+    const detailJa = document.getElementById('detail_content');
+    const detailEn = document.getElementById('detail_content_en');
+    if(detailJa) detailJa.style.display = (currentLang === 0) ? "block" : "none";
+    if(detailEn) detailEn.style.display = (currentLang === 1) ? "block" : "none";
 }
 
 // news, archivesのソート
@@ -202,4 +214,50 @@ function categorySort(targetCategory, isAnimated=true){
             }
         }
     }
+}
+
+// index_news
+const indexNewsJa = document.getElementById('index_news_list_ja');
+const indexNewsEn = document.getElementById('index_news_list_en');
+
+if (indexNewsJa || indexNewsEn) {
+    fetch('news_data.json')
+        .then(response => response.json())
+        .then(data => {
+            // 最新の3件だけ取得
+            const latestPosts = data.slice(0, 3);
+
+            latestPosts.forEach(post => {
+
+                const categoryClass = post.category === 'category_info' ? 'info' : 'live';
+
+                // 日本語版
+                const liJa = `
+                    <li>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <p class="date">${post.date}</p>
+                            <p class="${categoryClass}"></p>
+                        </div>
+                        <a href="news_detail.html?id=${post.id}">
+                            <p class="text_bold index_title">${post.title_ja}</p>
+                        </a>
+                    </li>`;
+                
+                // 英語版
+                const liEn = `
+                    <li>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <p class="date">${post.date}</p>
+                            <p class="${categoryClass}"></p>
+                        </div>
+                        <a href="news_detail.html?id=${post.id}">
+                            <p class="text_bold index_title">${post.title_en}</p>
+                        </a>
+                    </li>`;
+
+                if (indexNewsJa) indexNewsJa.insertAdjacentHTML('beforeend', liJa);
+                if (indexNewsEn) indexNewsEn.insertAdjacentHTML('beforeend', liEn);
+            });
+        })
+        .catch(err => console.error("News load error:", err));
 }

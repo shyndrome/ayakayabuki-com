@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link href="index.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>News | Ayaka Yabuki</title>
+</head>
+<body>
+    <div id="header_fetch_target"></div>
+    
+    <div class="contents_fadein">
+
+        <div class="bodybox">
+
+            <h1>News</h1>
+
+            <div class="center_contents template_img">
+                <img id="detail_image" src="" alt="">
+            </div>
+
+            <div class="profile_sentence template_box">
+                <ul id="detail_info">
+                    <p id="detail_date" class="date"></p>
+                    <p id="detail_category"></p>
+                </ul>
+
+                <h2 id="detail_title" class="lang_ja"></h2>
+                <h2 id="detail_title_en" class="lang_en"></h2>
+                
+                <p id="detail_content" class="lang_ja" style="margin-top:30px;"></p>
+                <p id="detail_content_en" class="lang_en" style="margin-top:30px;"></p>
+                
+                <p style="margin-top:50px;">
+                    <a href="news.html">
+                        << Back to News
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="footer_fetch_target"></div>
+
+    <script>
+        // URLの ?id=xxxx を取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        // JSONを読み込んで該当記事を表示
+        fetch('news_data.json')
+            .then(response => response.json())
+            .then(data => {
+                const post = data.find(p => p.id === postId);
+                if (post) {
+                    document.getElementById('detail_date').innerText = post.date;
+                    document.getElementById('detail_title').innerText = post.title_ja;
+                    document.getElementById('detail_title_en').innerText = post.title_en;
+                    document.getElementById('detail_content').innerHTML = post.content_ja;
+                    document.getElementById('detail_content_en').innerHTML = post.content_en;
+                    document.getElementById('detail_image').src = post.image;
+                    
+                    // カテゴリのクラス付与（INFO/LIVEのバッジ表示用）
+                    const catEl = document.getElementById('detail_category');
+                    catEl.className = post.category === 'category_info' ? 'info' : 'live';
+                }
+            });
+    </script>
+</body>
+</html>

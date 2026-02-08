@@ -316,6 +316,22 @@ a {
         margin: 0;
         font-size:12.5px;
     }
+    .info::after {
+        content: "INFO";
+        background-color: #b0909d;
+        padding: 0 7.5px;
+        color: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 100;
+    }
+    .live::after {
+        content: "LIVE";
+        background-color: #b0909d;
+        padding: 0 7.5px;
+        color: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 100;
+    }
     h2 {
         margin: 0;
     }
@@ -373,6 +389,10 @@ a {
                 text-align: center;
             }
         }
+    }
+
+    .sort_margin {
+        margin-bottom: calc(100px + env(safe-area-inset-bottom));
     }
 
     .news_block {

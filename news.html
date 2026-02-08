@@ -20,7 +20,7 @@
 
     <div class="contents_fadein">
 
-        <div class="bodybox">
+        <div class="bodybox sort_margin">
 
             <h1>News</h1>
 
@@ -38,7 +38,7 @@
 
             <div class="center_contents lang_ja">
                 <!--news_block-->
-                <div class="news_block sort_all_block category_info">
+                <!--<div class="news_block sort_all_block category_info">
                     <div class="news_inline">
                         <div class="news_infobox">
                             <p class="date">2026.2.15 </p>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <!--news_block-->
-                <div class="news_block sort_all_block category_live">
+                <!--<div class="news_block sort_all_block category_live">
                     <div class="news_inline">
                         <div class="news_infobox">
                             <p class="date">2026.8.2 </p>
@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <!--news_block-->
-                <div class="news_block sort_all_block  category_info">
+                <!--<div class="news_block sort_all_block  category_info">
                     <div class="news_inline">
                         <div class="news_infobox">
                             <p class="date">2026.11.26 </p>
@@ -96,12 +96,12 @@
                     <div class="news_imgbox">
                         <img src="archives_astarlasts01.jpg">
                     </div>
-                </div>
+                </div>-->
             </div>
 
             <div class="lang_en">
                 <!--news_block-->
-                <div class="news_block sort_all_block category_info">
+                <!--<div class="news_block sort_all_block category_info">
                     <div class="news_inline">
                         <div class="news_infobox">
                             <p class="date">2026.2.15 </p>
@@ -121,7 +121,7 @@
                     </div>
                 </div>
                 <!--news_block-->
-                <div class="news_block sort_all_block category_live">
+                <!--<div class="news_block sort_all_block category_live">
                     <div class="news_inline">
                         <div class="news_infobox">
                             <p class="date">2026.8.2 </p>
@@ -141,7 +141,7 @@
                     </div>
                 </div>
                 <!--news_block-->
-                <div class="news_block sort_all_block category_info">
+                <!--<div class="news_block sort_all_block category_info">
                     <div class="news_inline">
                         <div class="news_infobox">
                             <p class="date">2026.11.26 </p>
@@ -159,7 +159,7 @@
                     <div class="news_imgbox">
                         <img src="archives_astarlasts01.jpg">
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     
@@ -168,5 +168,46 @@
     <div id="footer_fetch_target">
     </div>
 
+    <script>
+        fetch('news_data.json')
+            .then(response => response.json())
+            .then(data => {
+                const containerJa = document.querySelector('.center_contents.lang_ja');
+                const containerEn = document.querySelector('.lang_en');
+
+                data.forEach(post => {
+                    const categoryLabel = post.category === 'category_info' ? 'info' : 'live';
+                    
+                    // 日本語版HTML
+                    const htmlJa = `
+                        <div class="news_block sort_all_block ${post.category}">
+                            <div class="news_inline">
+                                <div class="news_infobox"><p class="date">${post.date}</p><p class="${categoryLabel}"></p></div>
+                                <div class="news_titlebox"><p class="text_bold">${post.title_ja}</p></div>
+                                <div class="view_detail"><a href="news_detail.html?id=${post.id}">View Detail >></a></div>
+                            </div>
+                            <div class="news_imgbox"><img src="${post.image}"></div>
+                        </div>`;
+                    
+                    // 英語版HTML
+                    const htmlEn = `
+                        <div class="news_block sort_all_block ${post.category}">
+                            <div class="news_inline">
+                                <div class="news_infobox"><p class="date">${post.date}</p><p class="${categoryLabel}"></p></div>
+                                <div class="news_titlebox"><p class="text_bold">${post.title_en}</p></div>
+                                <div class="view_detail"><a href="news_detail.html?id=${post.id}">View Detail >></a></div>
+                            </div>
+                            <div class="news_imgbox"><img src="${post.image}"></div>
+                        </div>`;
+
+                    if(containerJa) containerJa.insertAdjacentHTML('beforeend', htmlJa);
+                    if(containerEn) containerEn.insertAdjacentHTML('beforeend', htmlEn);
+                });
+                
+                // 生成後に言語表示とソートを再適用
+                applyLanguage(lang, false);
+                if (typeof categorySort === "function") categorySort('category_all', false);
+            });
+    </script>
   </body>
 </html>
