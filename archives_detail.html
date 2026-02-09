@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+      <meta charset="UTF-8">
+      <link href="index.css" rel="stylesheet" type="text/css" media="all">
+      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+      <script src="index.js"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Detail | Ayaka Yabuki</title>
+  </head>
+  <body>
+    <div id="header_fetch_target"></div>
+
+    <div class="contents_fadein">
+        <div class="bodybox">
+            <h1>Archives</h1>
+
+            <div id="media_display" class="center_contents media_container"></div>
+
+            <div class="profile_sentence template_box">
+                <ul style="display:flex; gap:10px; align-items:center; list-style:none; padding:0;">
+                    <p id="detail_date" class="date"></p>
+                    <p id="detail_category"></p>
+                </ul>
+                <h2 id="detail_title" class="lang_ja"></h2>
+                <h2 id="detail_title_en" class="lang_en"></h2>
+
+                <p id="detail_content" class="lang_ja" style="margin-top:30px;"></p>
+                <p id="detail_content_en" class="lang_en" style="margin-top:30px;"></p>
+                
+                <p style="margin-top:50px;"><a href="archives.html"><< Back to Archives</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer_fetch_target"></div>
+
+    <script async src="//www.instagram.com/embed.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const archivesId = urlParams.get('id');
+
+        fetch('archives_data.json')
+            .then(response => response.json())
+            .then(data => {
+                const item = data.find(p => p.id === archivesId);
+                if (!item) return;
+
+                // 基本情報の表示
+                document.getElementById('detail_date').innerText = item.date;
+                document.getElementById('detail_title').innerText = item.title_ja;
+                document.getElementById('detail_title_en').innerText = item.title_en;
+                document.getElementById('detail_content').innerHTML = item.content_ja;
+                document.getElementById('detail_content_en').innerHTML = item.content_en;
+                
+                // メディア判定と生成
+                const display = document.getElementById('media_display');
+                let mediaHtml = "";
+
+                if (item.url) {
+                    if (item.url.includes('youtube.com') || item.url.includes('youtu.be')) {
+                        // YouTubeの場合
+                        const videoId = item.url.split('v=')[1] || item.url.split('/').pop();
+                        mediaHtml = `<div class="video_wrapper"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+                    } 
+                    else if (item.url.includes('instagram.com')) {
+                        // Instagramの場合（data-instgrm-captionedなし、幅はCSSで制御）
+                        const instaUrl = item.url.endsWith('/') ? item.url : item.url + '/';
+                        mediaHtml = `
+                            <div class="insta_container">
+                                <blockquote class="instagram-media" 
+                                    data-instgrm-permalink="${instaUrl}embed/" 
+                                    data-instgrm-version="14">
+                                </blockquote>
+                            </div>`;
+                    }
+                } 
+                else if (item.image) {
+                    // 画像の場合
+                    mediaHtml = `<img src="${item.image}" alt="" style="width:100%; height:auto;">`;
+                }
+
+                display.innerHTML = mediaHtml;
+
+                // Instagramの再スキャン
+                if (window.instgrm) {
+                    window.instgrm.Embeds.process();
+                }
+
+                // カテゴリ付与
+                const catEl = document.getElementById('detail_category');
+                catEl.className = item.category === 'category_mv' ? 'mv' : 'play';
+
+                applyLanguage(lang, false);
+            });
+    </script>
+  </body>
+</html>

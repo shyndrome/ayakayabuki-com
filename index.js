@@ -1,3 +1,12 @@
+// loading
+const hasLoaded = sessionStorage.getItem('hasLoaded');
+const loadingEl = document.getElementById('loading');
+
+if (!hasLoaded && loadingEl) {
+    // 初回ならクラスをつけて表示させる
+    loadingEl.classList.add('is-first-time');
+}
+
 // 日・英表示定義
 var lang = localStorage.getItem('selectedLang') ? parseInt(localStorage.getItem('selectedLang')) : 0;
 
@@ -71,7 +80,6 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
         }//, 5000);
 
     } else {
-        if (loadingScreen) loadingScreen.style.display = 'none'; // ローディング画面自体を消す
         if (header) header.classList.add('show');
         if (contents) contents.classList.add('show');
         const footer = document.getElementById('footer_fetch_target');

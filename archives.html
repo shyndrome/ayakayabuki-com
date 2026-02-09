@@ -37,8 +37,8 @@
             </div>
 
             <div class="lang_ja">
-                <ul class="archives_flex">
-                    <li class="archives_block sort_all_block category_mv">
+                <ul class="lang_ja archives_flex">
+                    <!--<li class="archives_block sort_all_block category_mv">
                         <a href="archives_hinagata.html">
                             <img src="archives_astarlasts01.jpg">
                         </a>
@@ -73,13 +73,13 @@
                             <img src="archives_ubugoe01.png">
                         </a>
                         <p>産声</p>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
 
             <div class="lang_en">
-                <ul class="archives_flex">
-                    <li class="archives_block sort_all_block category_mv">
+                <ul class="lang_en archives_flex">
+                    <!--<li class="archives_block sort_all_block category_mv">
                         <a href="archives_hinagata.html">
                             <img src="archives_astarlasts01.jpg">
                         </a>
@@ -114,7 +114,7 @@
                             <img src="archives_ubugoe01.png">
                         </a>
                         <p>Ubugoe</p>
-                    </li>
+                    </li>-->
                 </ul>
             </div>
         </div>
@@ -124,5 +124,42 @@
     <div id="footer_fetch_target">
     </div>
 
+    <script>
+        fetch('archives_data.json')
+            .then(response => response.json())
+            .then(data => {
+                const containerJa = document.querySelector('.lang_ja.archives_flex');
+                const containerEn = document.querySelector('.lang_en.archives_flex');
+
+                data.forEach(archives => {
+                    const categoryLabel = archives.category === 'category_mv' ? 'mv' : 'play';
+                    
+                    // 日本語版HTML
+                    const htmlJa = `
+                        <li class="archives_block sort_all_block ${archives.category}">
+                            <a href="archives_detail.html?id=${archives.id}">
+                                <img src="${archives.image}">
+                            </a>
+                            <p>${archives.index_ja}</p>
+                        </li>`;
+                    
+                    // 英語版HTML
+                    const htmlEn = `
+                        <li class="archives_block sort_all_block ${archives.category}">
+                            <a href="archives_detail.html?id=${archives.id}">
+                                <img src="${archives.image}">
+                            </a>
+                            <p>${archives.index_en}</p>
+                        </li>`;
+
+                    if(containerJa) containerJa.insertAdjacentHTML('beforeend', htmlJa);
+                    if(containerEn) containerEn.insertAdjacentHTML('beforeend', htmlEn);
+                });
+                
+                // 生成後に言語表示とソートを再適用
+                applyLanguage(lang, false);
+                if (typeof categorySort === "function") categorySort('category_all', false);
+            });
+    </script>
   </body>
 </html>
