@@ -315,11 +315,14 @@ a {
 
 .index_news {
     position: relative;
-    margin: 5px 30px;
+    margin: 5px 30px 50px;
     li {
         text-decoration: none;
         list-style: none;
         margin: 15px 0;
+    }
+    .view_more {
+        padding-left: 40px;
     }
     .date {
         margin: 0;
