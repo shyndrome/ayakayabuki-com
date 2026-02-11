@@ -44,23 +44,22 @@
 
         @media only screen and (max-width: 449px) {
             .nav {
-                width: calc(100% - 75px);
+                width: calc(100% - 65px);
                 padding: 0 0 0 10px;
             }
             .nav-name {
                 display: flex;
-                width: calc(100% - 20vw);
+                width: calc(100% - 60px);
                 height: 100%;
                 align-items: center;
 
                 img {
-                    width: 85%;
+                    width: 90%;
                 }
             }
             .nav-item {
                 display: inline-block;
-                width: 20vw;
-                font-size: 5vw;
+                width: 60px;
                 cursor: pointer;
                 text-align: center;
             }
@@ -133,28 +132,17 @@
             justify-content: center;
             align-items: center;
             z-index: 90;
-            width: 20vw;
-            height: calc(4vw + 14px);
-            background-color: #fff;
-            border: 0.75px solid #444;
+            width: 60px;
+            height: 20px;
+            border-bottom: 0.5px solid #666;
             transition: all 0.5s;
-            border-radius: 5px;
             text-align: left;
+            font-size: 11px;
             font-weight: 100;
-            margin: 0; /* 余計なマージンを排除 */
+            margin: 0;
             box-sizing: border-box;
-            background-image: url("lang_btn_af.png");
-        }
-
-        .lang-btn img {
-            /*content:"JA|EN";*/
-            /*content: url("lang_btn_af.png");*/
-            width: 16vw;
-            font-size: 3.8vw;
-            margin: auto;
-            letter-spacing: 2.5px !important;
-            color: #444;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.1px;
+            color: #666;
         }
         
         #lang-btn-check:checked ~ .lang-btn span {
@@ -163,16 +151,15 @@
         
         /*中身自体*/
         .lang-content {
-            width: 20vw;
+            width: 60px;
             position: absolute;
             top: 100%;
             z-index: 100;
             background-color: #fff;
             transition: all 1s;
             display: none;
-            border-radius: 0 0 5px 5px;
-            border: 0.75px solid #ccc;
-            border-top: none;
+            border: 0.5px solid #ccc;
+            border-bottom: none;
 
             ul {
                 overflow: auto;
@@ -183,25 +170,20 @@
                 li {
                     display: block;
                     list-style: none;
-                    text-align: left;
+                    text-align: center;
                     margin: 0;
                     color: #444;
-                    letter-spacing: 2px;
-                    font-size: 4vw;
+                    letter-spacing: 0.2px;
+                    font-size: 11px;
                     z-index: 99;
                     line-height: 1;
-                    border-radius: 5px;
-                    border: none;
                     border-bottom: 0.5px solid #ccc;
-                    &:last-child {
-                        border-bottom: none;
-                    }
                 }
                 .nav-ja {
-                    padding: 6px 0 8px 10px;
+                    padding: 9px 0 11px 0;
                 }
                 .nav-en {
-                    padding: 7px 0 7px 10px;
+                    padding: 10px 0 10px 0;
                 }
             }
         }
@@ -223,7 +205,7 @@
                 top: 25px;
                 right: 15px;
                 height: 30px;
-                width: 40px;
+                width: 30px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -233,7 +215,7 @@
                     content:" ";
                     display: block;
                     height: 1px;
-                    width: 35px;
+                    width: 30px;
                     background-color: #444;
                     position: absolute;
                     transition: all 0.5s;
@@ -241,11 +223,11 @@
                 }
 
                 span:before {
-                    bottom: 10px;
+                    bottom: 8px;
                 }
 
                 span:after {
-                    top: 10px;
+                    top: 8px;
                 }
             }
         }
@@ -408,12 +390,15 @@
             <!--Languageメニュー-->
             <div class="language-menu nav-item mobile_only">
                 <input type="checkbox" id="lang-btn-check">
-                <label for="lang-btn-check" class="lang-btn"><img src="lang_btn_af.png"></label>
+                <label for="lang-btn-check" class="lang-btn">
+                    Language
+                    <!--<img src="lang_btn_af.png">-->
+                </label>
                 <!--ここからメニュー-->
                 <div class="lang-content">
                     <ul>
-                        <li class="nav-ja" id="langToggleToJa_Mob">JA</li>
-                        <li class="nav-en" id="langToggleToEn_Mob">EN</li>
+                        <li class="nav-ja" id="langToggleToJa_Mob">Japanese</li>
+                        <li class="nav-en" id="langToggleToEn_Mob">English</li>
                     </ul>
                 </div>
             </div>
