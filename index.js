@@ -86,9 +86,7 @@ Promise.all([fetchHeader, fetchFooter]).then(([headerData, footerData]) => {
         if (footer) footer.classList.add('show');
         document.body.style.overflow = '';
     }
-}/*).catch(err => {
-    console.error("Error:", err);
-}*/);
+});
 
 
 // 言語設定
