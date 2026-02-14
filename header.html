@@ -126,6 +126,9 @@
         /*メニュー*/
         .language-menu {
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .lang-btn {
             display: flex;
@@ -136,7 +139,7 @@
             height: 20px;
             border-bottom: 0.5px solid #666;
             transition: all 0.5s;
-            text-align: left;
+            text-align: center;
             font-size: 11px;
             font-weight: 100;
             margin: 0;
@@ -151,9 +154,11 @@
         
         /*中身自体*/
         .lang-content {
-            width: 60px;
+            width: 80px;
             position: absolute;
             top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 100;
             background-color: #fff;
             transition: all 1s;
